@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mynodeapp
+  namespace: production
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: mynodeapp
+  template:
+    metadata:
+      name: nodepod 
+      labels:
+        app: mynodeapp
+    spec:
+      containers:
+      - name: nodecontainer
+        image: ogochukwuozotta/nodeapp
+        ports:
+        - containerPort: 8080
+        env:
+        - name: MY_SECRET
+          value: On3H1torL3sS
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mynodeapp
+  namespace: production
+spec:
+  selector:
+    app: mynodeapp
+  ports:
+  - port: 80
+    targetPort: 8080
+  type: LoadBalancer
+
